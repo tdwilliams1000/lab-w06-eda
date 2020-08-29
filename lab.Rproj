@@ -1,4 +1,4 @@
-Version: 1.0
+Version: 0.0.9900
 
 RestoreWorkspace: No
 SaveWorkspace: No
@@ -11,3 +11,4 @@ Encoding: UTF-8
 
 RnwWeave: Sweave
 LaTeX: XeLaTeX
+
