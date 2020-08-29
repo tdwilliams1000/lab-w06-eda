@@ -1,7 +1,7 @@
 #' ---
 #' title: "Data Science Methods, Lab for Week 99"
-#' author: "Dan Hicks"
-#' email: hicks.daniel.j@gmail.com
+#' author: "Your Name"
+#' email: Your Email
 #' output:
 #'   html_document:
 #'     toc: true
