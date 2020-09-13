@@ -27,12 +27,13 @@ test_that('5.2. Count of houses by overall condition', {
     expect_equal(nrow(cond_count), 9L)
 })
 
+correct_levels = c('Very_Poor', 'Poor', 
+                   'Fair', 'Below_Average', 
+                   'Average', 'Above_Average', 
+                   'Good', 'Very_Good', 
+                   'Excellent', 'Very_Excellent')
+
 test_that('5.3. Condition levels', {
-    correct_levels = c('Very_Poor', 'Poor', 
-                       'Fair', 'Below_Average', 
-                       'Average', 'Above_Average', 
-                       'Good', 'Very_Good', 
-                       'Excellent', 'Very_Excellent')
     expect_identical(condition_levels, correct_levels)
 })
 
@@ -41,9 +42,10 @@ test_that('5.4. Overall condition factor with the correct levels', {
                                          levels = correct_levels))
 })
 
+dataf_fct = mutate(dataf, overall_cond_fct = factor(Overall_Cond, 
+                                                    levels = correct_levels))
+
 test_that('5.5. `overall_cond_fct` is a factor in `dataf` with the correct levels', {
-    dataf_fct = mutate(dataf, overall_cond_fct = factor(Overall_Cond, 
-                                                        levels = correct_levels))
     expect_identical(dataf$overall_cond_fct, dataf_fct$overall_cond_fct)
 })
 
