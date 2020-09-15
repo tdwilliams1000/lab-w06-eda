@@ -36,6 +36,7 @@ dataf = read_csv(file.path('data', 'ames.csv'))
 #' 
 #' 
 #' 
+
 #' 2. As you were looking through the variable descriptions, you probably noticed a few variables that might be good predictors of sale price.  List two or three here. 
 #' 
 #' 
@@ -59,6 +60,7 @@ problem2.2.numerics = 12
 #' 
 #' 
 #' 
+
 #' 4. How many variables have missing values?  
 #' 
 problem2.4 = 937
@@ -76,6 +78,7 @@ dataf %>%
 #' 
 #' 
 #' 
+
 #' 2. Run the following two expressions.  Why do they give different results? 
 #' 
 #' 
@@ -121,6 +124,7 @@ distinct(dup_demo)
 #' 
 #' 
 #' 
+
 #' 2. Tidyverse functions are generally pretty good about treating a character variable as a factor when it makes sense to do so.  Use `count()` to get a count of the number of houses by overall condition; assign this data frame to `cond_count`. 
 #'  
 
