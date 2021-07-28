@@ -16,7 +16,7 @@ on:
 jobs:
   tests:
     # The type of runner that the job will run on
-    runs-on: macos-11
+    runs-on: macOS-11
     
     # Steps are the tasks that the job will execute
     steps:
