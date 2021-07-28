@@ -29,14 +29,14 @@ jobs:
         env:
           cache-name: cache-packages
         with:
-          path: /Library/Frameworks/R.framework/Versions/4.1/Resources/library
+          path: /Users/runner/Library/R/x86_64/4.1/library
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('DESCRIPTION') }}
           
       # Install dependencies from DESCRIPTION
       - name: Install dependencies
         run: |
           Rscript -e "dir.create(Sys.getenv('R_LIBS_USER'), recursive = TRUE)"
-          Rscript -e "install.packages('remotes')"
+          Rscript -e "install.packages('remotes', repos = "http://cran.us.r-project.org")"
           Rscript -e "remotes::install_deps(dependencies = TRUE)"
       
       # Run the tests
