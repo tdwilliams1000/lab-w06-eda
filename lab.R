@@ -19,3 +19,4 @@
 #' # Problem 1 #
 #' Assign the value `2L` to `foo`. 
 foo = 2L
+2+2
