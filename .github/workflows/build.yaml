@@ -36,7 +36,7 @@ jobs:
       - name: Install dependencies
         run: |
           Rscript -e "dir.create(Sys.getenv('R_LIBS_USER'), recursive = TRUE)"
-          Rscript -e "install.packages('remotes', repos = "http://cran.us.r-project.org")"
+          Rscript -e "install.packages('remotes', repos = 'http://cran.us.r-project.org')"
           Rscript -e "remotes::install_deps(dependencies = TRUE)"
       
       # Run the tests
