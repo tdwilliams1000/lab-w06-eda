@@ -8,6 +8,9 @@ on:
   push: 
     branches: [ main ]
 
+  pull-request:
+    branches: [ main ]
+
   # Or manually from the Actions tab
   workflow_dispatch: 
 
