@@ -71,8 +71,3 @@ test_that('6.4. Top 10 variables most strongly correlated with sale price', {
     
     expect_equal(top_10, top_10_soln)
 })
-
-
-
-
-
