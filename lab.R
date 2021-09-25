@@ -85,7 +85,7 @@ problem3.2.numerics = 37
 #' 4. *How many variables have missing values?  Hint: Check the class of the output of `skim()`.* 
 #' 
 
-problem2.4 = dataf %>% 
+problem3.4 = dataf %>% 
     skim() %>% 
     filter(n_missing > 0) %>% 
     nrow()
