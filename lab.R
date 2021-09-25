@@ -201,11 +201,13 @@ dataf = mutate(dataf, across(.cols = c(exter.cond, bsmt.cond,
 #' *But manually typing out all of the numerical covariates would be tedious and prone to error.  Fortunately `select()` is much more powerful than this.  You can read more in `?select` or here: <https://tidyselect.r-lib.org/reference/language.html>.  Then specifically read the docs for `where()`.*
 #' 
 #' *Write a pipe that `select()`s the numeric columns and passes the result to `cor()` for a Spearman regression and uses the `pairwise.complete.obs` method to handle missing values.  Assign the result to `cor_matrix`.*  
-# cor_matrix = ???
+cor_matrix = dataf %>% 
+    select(where(is.numeric)) %>% 
+    cor(use = 'pairwise.complete.obs', method = 'spearman')
 
 
 #' 2. *Now we convert the correlation matrix into a dataframe. Uncomment the following line, and explain what it's doing.* 
-# cor_df = as_tibble(cor_matrix, rownames = 'covar')
+cor_df = as_tibble(cor_matrix, rownames = 'covar')
 #' 
 #' 
 #' 
@@ -225,6 +227,11 @@ dataf = mutate(dataf, across(.cols = c(exter.cond, bsmt.cond,
 #' - *Assigns the result to the variable `top_10`*
 #' 
 
+top_10 = cor_df %>% 
+    select(covar, saleprice) %>% 
+    mutate(cor_abs = abs(saleprice)) %>% 
+    arrange(desc(cor_abs)) %>% 
+    top_n(10, cor_abs)
 
 #' # Problem 8 #
 # problem 8 ----
