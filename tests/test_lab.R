@@ -37,7 +37,8 @@ test_that('6.2. Count of houses by exterior condition', {
 
 test_that('6.4. Exterior condition factor as an integer', {
     correct_levels = c('Po', 'Fa', 'TA', 'Gd', 'Ex')
-    correct_int = as.integer(fct_relevel(ames_raw$`Exter Cond`, correct_levels))
+    correct_int = as.integer(fct_relevel(ames_raw$`Exter Cond`, 
+                                         correct_levels))
     expect_identical(char_to_int(ames_raw$`Exter Cond`), 
                      correct_int)
 })
