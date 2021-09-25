@@ -175,7 +175,7 @@ problem2.4 = 937
 
 #' *But manually typing out all of the numerical covariates would be tedious and prone to error.  Fortunately `select()` is much more powerful than this.  You can read more in `?select` or here: <https://tidyselect.r-lib.org/reference/language.html>.  Then specifically read the docs for `where()`.*
 #' 
-#' *Write a pipe that `select()`s the numeric columns and passes the result to `cor()` for a Spearman regression.  Assign the result to `cor_matrix`.*  
+#' *Write a pipe that `select()`s the numeric columns and passes the result to `cor()` for a Spearman regression and uses the `pairwise.complete.obs` method to handle missing values.  Assign the result to `cor_matrix`.*  
 # cor_matrix = ???
 
 
