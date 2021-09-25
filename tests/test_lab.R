@@ -3,7 +3,13 @@ library(testthat)
 
 warning('Problem 1 not checked automatically')
 
-PROBLEM 2
+test_that('2.2. Fixing names', {
+    expect_equal(names(dataf), 
+                 {ames_raw %>% 
+                         names() %>% 
+                         make.names() %>% 
+                         tolower()})
+})
 
 test_that("3.1. How many observations?", {
     expect_equal(problem3.1, 2930L)
@@ -26,7 +32,7 @@ test_that('5. Duplicate rows', {
 })
 
 test_that('6.2. Count of houses by exterior condition', {
-    expect_equal(nrow(exter.cond), 5L)
+    expect_equal(nrow(ex_cond_count), 5L)
 })
 
 test_that('6.4. Exterior condition factor as an integer', {
@@ -44,27 +50,14 @@ test_that('6.7. Apply `char_to_int` to several columns', {
 })
 
 
-PROBLEM 7
+test_that('7.1. Dimensions of cor_matrix', {
+    expect_identical(dim(cor_matrix), c(41L, 41L))
+})
 
-# test_that('6.1. `dataf_smol` contains all the factor and numeric variables from `dataf`', {
-#     expect_identical(dataf_smol, select(dataf_fct, where(is.factor), where(is.numeric)))
-# })
-
-
-# test_that('6.4. Top 10 variables most strongly correlated with sale price', {
-#     top_10_soln = structure(list(covar = c("Sale_Price", "Gr_Liv_Area", "Garage_Cars", 
-#                                            "Year_Built", "Garage_Area", "Full_Bath",
-#                                            "Total_Bsmt_SF", "Year_Remod_Add", 
-#                                            "First_Flr_SF", "Fireplaces"), 
-#                                  Sale_Price = c(1, 0.723342036109249, 
-#                                                 0.701545429698005, 0.680822358625856, 
-#                                                 0.660474678142175, 0.634160817015663, 
-#                                                 0.606564291637224, 0.601453915476304, 
-#                                                 0.581535848633275, 0.526137194835603
-#                                  )), 
-#                             row.names = c(NA, -10L), 
-#                             class = c("tbl_df", "tbl", "data.frame"
-#                             ))
-#     
-#     expect_equal(top_10, top_10_soln)
-# })
+test_that('7.4. Top 10 variables', {
+    expect_equal(top_10$covar, 
+                 c('saleprice', 'overall.qual', 'gr.liv.area', 
+                   'garage.cars', 'year.built', 'garage.area', 
+                   'garage.yr.blt', 'full.bath', 'total.bsmt.sf', 
+                   'year.remod.add'))
+})
