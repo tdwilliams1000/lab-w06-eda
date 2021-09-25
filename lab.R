@@ -56,7 +56,9 @@ library(AmesHousing)
 #' 
 
 #' 2. *We can use `set_names()` to modify a variable's names (here, the column names) in a pipe-friendly way.  In particular, `set_names()` supports passing a function to modify the names.  Write a pipe that starts with `ames_raw`, uses `make.names()` to deal with spaces and column names that start with numbers, and then uses `tolower()` to make all the names lowercase.  Assign the result to `dataf`, which will be our primary working dataframe.*
-# dataf = ???
+dataf = ames_raw %>% 
+    set_names(make.names) %>% 
+    set_names(tolower)
 
 
 #' # Problem 3 #
@@ -65,13 +67,15 @@ library(AmesHousing)
 #' 
 #' 1. *The paper abstract (see above) reports 2930 rows.  How many observations (rows) are in our version of the dataset?*  
 #' 
-problem3.1 = 1.7e15 # scientific notation: 1.7 x 10^15
+problem3.1 = nrow(dataf)
 
 #' 2. *The abstract also reports 80 "explanatory variables (23 nominal, 23 ordinal, 14 discrete, and 20 continuous)."  How many factor, character, and numeric variables do we have in the dataframe?*
 #' 
-problem3.2.factors = 7
-problem3.2.characters = 18000
-problem3.2.numerics = 12
+skim(dataf)
+
+problem3.2.factors = 0
+problem3.2.characters = 45
+problem3.2.numerics = 37
 
 #' 3. *Explain the relationship between the variables in the dataset and the variables in the dataframe as we've loaded it.* 
 #' 
@@ -80,7 +84,11 @@ problem3.2.numerics = 12
 
 #' 4. *How many variables have missing values?  Hint: Check the class of the output of `skim()`.* 
 #' 
-problem2.4 = 937
+
+problem2.4 = dataf %>% 
+    skim() %>% 
+    filter(n_missing > 0) %>% 
+    nrow()
 
 
 #' # Problem 4 #
@@ -121,9 +129,12 @@ problem2.4 = 937
 #' 1. *Read the docs for `dplyr::distinct()`.  Then use this function to create a dataframe `dataf_nodup` with the duplicate rows removed.*  
 #' 
 
+dataf_nodup = distinct(dataf)
+
 #' 2. *How many duplicate rows are in the dataset?*
 #' 
-# n_duplicate = ???
+n_duplicate = nrow(dataf) - nrow(dataf_nodup)
+n_duplicate
 
 
 #' # Problem 6: Coding ordinal variables #
@@ -138,9 +149,21 @@ problem2.4 = 937
 #' 
 
 #' 2. *Since ultimately we're going to construct a Spearman rank correlation matrix (the quick-and-dirty approach to the problem), we need to get `exter.cond` into an integer representation. First, let's generate a table that shows the distribution across values of `exter.cond`, using `dplyr::count()`. Call this `ex_cond_count`. We'll use this to check the conversion process over the next few steps.*
-# ex_cond_count = ???
+ex_cond_count = count(dataf, exter.cond)
+ex_cond_count
 
 #' 3. *As a first attempt, write a function `char_to_int()` that takes a character vector as input, coerces to a factor using `as.factor()`, and then coerces it to `as.integer()`.  Using `mutate()` and `count()`, apply this function to `exter.cond` and check the distribution against your answer for #2.* 
+
+char_to_int = function(chr) {
+    chr %>% 
+        as_factor() %>%
+        fct_relevel('Po', 'Fa', 'TA', 'Gd', 'Ex') %>% 
+        as.integer()
+}
+
+dataf %>% 
+    mutate(exter.cond = char_to_int(exter.cond)) %>% 
+    count(exter.cond)
 
 #' 4. *Can you explain what went wrong?  Hint:  Check the docs for the `levels` argument of `factor()`.*
 #' 
@@ -155,9 +178,11 @@ problem2.4 = 937
 #' 6. *The most efficient way to avoid this poor design is to use `forcats::fct_relevel()`.  This is loaded as part of the tidyverse, so you don't need to modify the packages loaded up above, or `DESCRIPTION`.  Rewrite `char_to_int()` again, using `fct_relevel()` in place of `as.factor()`, and check against your answer to #2 to ensure that this is all working as expected.*
 #' 
 
-#' 7. *Finally we want this factor to be in our analysis dataframe.  **Normally, to preserve immutability**, I would either do this in the pipe where we first loaded the CSV (as we did above, when we fixed the names), or start by creating something like `dataf_raw` and then write a pipe that did all the cleaning steps and assigning the result to `dataf`, including this.  For the purposes of this lab, we'll just do it here.  Using either `mutate_at()` or `mutate(across())`, apply `char_to_int()` to all of the condition variables represented using these same levels:  `exter.cond`, `bsmt.cond`, `heatingqc`, `garage.cond`.* 
+#' 7. *Finally we want this factor to be in our analysis dataframe.  **Normally, to preserve immutability**, I would either do this in the pipe where we first loaded the CSV (as we did above, when we fixed the names), or start by creating something like `dataf_raw` and then write a pipe that did all the cleaning steps and assigning the result to `dataf`, including this.  For the purposes of this lab, we'll just do it here.  Using either `mutate_at()` or `mutate(across())`, apply `char_to_int()` to all of the condition variables represented using these same levels:  `exter.cond`, `bsmt.cond`, `heating.qc`, `garage.cond`.* 
 
-# dataf = ???
+dataf = mutate(dataf, across(.cols = c(exter.cond, bsmt.cond, 
+                                       heating.qc, garage.cond), 
+                             .fns = char_to_int))
 
 
 

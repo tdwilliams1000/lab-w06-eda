@@ -39,7 +39,7 @@ test_that('6.4. Exterior condition factor as an integer', {
 test_that('6.7. Apply `char_to_int` to several columns', {
     expect_identical(char_to_int(ames_raw$`Exter Cond`), dataf$exter.cond)
     expect_identical(char_to_int(ames_raw$`Bsmt Cond`), dataf$bsmt.cond)
-    expect_identical(char_to_int(ames_raw$HeatingQC), dataf$heatingqc)
+    expect_identical(char_to_int(ames_raw$`Heating QC`), dataf$heating.qc)
     expect_identical(char_to_int(ames_raw$`Garage Cond`), dataf$garage.cond)
 })
 
