@@ -196,12 +196,12 @@ dataf = mutate(dataf, across(.cols = c(exter.cond, bsmt.cond,
 #' 
 #' 1. *For the first problem (column types), we could use the tidyverse function `select()` to pull out a given set of columns from the dataframe.*
 
-# select(dataf, Sale_Price, Overall_Cond, Gr_Liv_Area)
+# select(dataf, saleprice, overall.cond, gr.liv.area)
 
 #' *But manually typing out all of the numerical covariates would be tedious and prone to error.  Fortunately `select()` is much more powerful than this.  You can read more in `?select` or here: <https://tidyselect.r-lib.org/reference/language.html>.  Then specifically read the docs for `where()`.*
 #' 
 #' *Write a pipe that `select()`s the numeric columns and passes the result to `cor()` for a Spearman regression.  Assign the result to `cor_matrix`.*  
-# cor_matrix = 
+# cor_matrix = ???
 
 
 #' 2. *Now we convert the correlation matrix into a dataframe. Uncomment the following line, and explain what it's doing.* 
