@@ -1,7 +1,7 @@
 #' ---
 #' title: "Data Science Methods, Lab for Week 99"
-#' author: "Your Name"
-#' email: Your Email
+#' author: "Tevin Williams"
+#' email: twilliams71@ucmerced.edu
 #' output:
 #'   html_document:
 #'     toc: true
@@ -26,38 +26,36 @@
 #' 
 
 ## Setup
-## **IMPORTANT**: Add all dependencies to `DESCRIPTION`
 library(tidyverse)
-library(skimr)
-library(visdat)
-
-library(AmesHousing)
-
+library(dplyr)
+## **IMPORTANT**: Add all dependencies to `DESCRIPTION`
 #' # Problem 1 #
 # problem 1 ----
 #' *We'll start with Peng and Matsui's step 1, "Formulate your question."  The Ames dataset is often used to teach predictive modeling tasks, where the goal is to predict the final selling price.  So our question will be _which variables in the dataset are mostly highly correlated with sale price?_*
 #' 
 #' 1. *Look through the short descriptions in `?ames_raw` (or online, <https://cran.r-project.org/web/packages/AmesHousing/AmesHousing.pdf>).  Which variable reports the actual sale price?* 
-#' 
+#' ames_raw$SalePrice
 #' 
 #' 
 
 #' 2. *As you were looking through the variable descriptions, you probably noticed a few variables that might be good predictors of sale price.  List two or three here.* 
-#' 
-#' 
-#' 
+#' Overall Cond
+#' Year Built
+#' BsmtFin Type
 
 
 #' # Problem 2: Loading the data #
 # problem 2 ----
 #' *`AmesHousing` includes a few different representations of the data.  We'll be working with `ames_raw`, which represents what you'd get from reading in the original CSV file.  However — like a lot of CSV files — the column names aren't R-friendly.*
 #' 1. *Try running the following line.  Can you explain why this causes an error?*
-# ames_raw$MS SubClass
-#' 
+ames_raw$MS SubClass
+#'There is a space   
 
 #' 2. *We can use `set_names()` to modify a variable's names (here, the column names) in a pipe-friendly way.  In particular, `set_names()` supports passing a function to modify the names.  Write a pipe that starts with `ames_raw`, uses `make.names()` to deal with spaces and column names that start with numbers, and then uses `tolower()` to make all the names lowercase.  Assign the result to `dataf`, which will be our primary working dataframe.*
-# dataf = ???
-
+#' 
+dataf = ames_raw %>% 
+  set_names(make.names) %>% 
+  set_names(tolower) 
 
 #' # Problem 3 #
 # problem 3 ----
@@ -65,53 +63,59 @@ library(AmesHousing)
 #' 
 #' 1. *The paper abstract (see above) reports 2930 rows.  How many observations (rows) are in our version of the dataset?*  
 #' 
-problem3.1 = 1.7e15 # scientific notation: 1.7 x 10^15
+#' 2.93e3
 
 #' 2. *The abstract also reports 80 "explanatory variables (23 nominal, 23 ordinal, 14 discrete, and 20 continuous)."  How many factor, character, and numeric variables do we have in the dataframe?*
 #' 
-problem3.2.factors = 7
-problem3.2.characters = 18000
-problem3.2.numerics = 12
+problem3.2.factors = 0
+problem3.2.characters = 45
+problem3.2.numerics = 37
 
 #' 3. *Explain the relationship between the variables in the dataset and the variables in the dataframe as we've loaded it.* 
-#' 
-#' 
-#' 
+#' The paper suggest that the dataset has 23 nominal, 23 ordinal, 14 discrete, and 20 continuous variables. It seems that the nominal and ordinal variables would be transferred as characters and the discrete and contious vraibles would be numeric. However, the numbers do not match up (orginal data contains 46 nominal and ordinal, where as our dataframe contain 45).   
+
 
 #' 4. *How many variables have missing values?  Hint: Check the class of the output of `skim()`.* 
 #' 
-problem3.4 = 937
+problem3.4 = 27
 
 
 #' # Problem 4 #
 # problem 4 ----
 #' *(This problem is a quick comprehension check for `dplyr` functions + pipes.)  `summarize()` is a tidyverse function that collapses multiple rows of data into a single row.  Like `mutate()` and `count()`, it respects groups constructed by `group_by()`.  Here's an example:* 
 
-# dataf %>% 
-#     group_by(ms.zoning) %>% 
-#     summarize(sale.price = mean(sale.price)) %>% 
-#     ungroup()
+dataf %>%
+    group_by(ms.zoning) %>%
+    summarize(saleprice = mean(saleprice)) %>% 
+    ungroup()
 
 #' 1. *Examine the full codebook, at <http://jse.amstat.org/v19n3/decock/DataDocumentation.txt>.  What do the values of MS_Zoning represent?* 
 #' 
-#' 
-#' 
+# A: Agriculture
+# C:	Commercial
+# FV:	Floating Village Residential
+# I:	Industrial
+# RH:	Residential High Density
+# RL:	Residential Low Density
+# RP:	Residential Low Density Park 
+# RM:	Residential Medium Density
+
 
 #' 2. *Run the following two expressions.  Why do they give different results?* 
 #' 
+#' In the first expression the filter is applied before mean of the sale price is computed where as the second expression filters the sale price after.
 #' 
-#' 
-# dataf %>% 
-#     group_by(ms.zoning) %>% 
-#     filter(sale.price > 100000) %>% 
-#     summarize(sale.price = mean(sale.price)) %>% 
-#     ungroup()
+dataf %>%
+    group_by(ms.zoning) %>%
+    filter(saleprice > 100000) %>%
+    summarize(saleprice = mean(saleprice)) %>%
+    ungroup()
 
-# dataf %>% 
-#     group_by(ms.zoning) %>% 
-#     summarize(sale.price = mean(sale.price)) %>% 
-#     filter(sale.price > 100000) %>% 
-#     ungroup()
+dataf %>%
+    group_by(ms.zoning) %>%
+    summarize(saleprice = mean(saleprice)) %>%
+    filter(saleprice > 100000) %>%
+    ungroup()
 
 
 #' # Problem 5: Duplicate rows #
@@ -120,10 +124,10 @@ problem3.4 = 937
 #' 
 #' 1. *Read the docs for `dplyr::distinct()`.  Then use this function to create a dataframe `dataf_nodup` with the duplicate rows removed.*  
 #' 
-
+dataf_nodup = distinct(dataf)
 #' 2. *How many duplicate rows are in the dataset?*
 #' 
-# n_duplicate = ???
+n_duplicate = 0
 
 
 #' # Problem 6: Coding ordinal variables #
