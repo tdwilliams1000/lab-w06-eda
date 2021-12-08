@@ -125,6 +125,7 @@ dataf %>%
 #' 1. *Read the docs for `dplyr::distinct()`.  Then use this function to create a dataframe `dataf_nodup` with the duplicate rows removed.*  
 #' 
 dataf_nodup = distinct(dataf)
+
 #' 2. *How many duplicate rows are in the dataset?*
 #' 
 n_duplicate = 0
@@ -137,12 +138,12 @@ n_duplicate = 0
 #' *(It's actually a little more complicated for strings.  The base R function `read.csv()` involves a call to `as.data.frame()`, which has an argument `stringsAsFactors` that, if true, coerces all strings/characters into factors.  Prior to R version 4, the default value for this was `TRUE`, because back in the 1990s it was relatively rare to have actual text variables in the data.  So, up until last year, `read.csv()` by default would parse string columns into factors.  Both `readr::read_csv()` (a tidyverse package) and the current version of `read.csv()` by default parse string columns into characters.)*
 #' 
 #' 1. *Let's take a look at two condition variables, for the overall and exterior.  These are `overall.cond` and `exter.cond`, respectively. How are these two ordinal variables represented?*
-#' 
-#' 
-#' 
-
+#' overall condition is represented as numerical while exterior condition is represtend as a character.
+class(dataf$overall.cond)
+class(dataf$exter.cond)
 #' 2. *Since ultimately we're going to construct a Spearman rank correlation matrix (the quick-and-dirty approach to the problem), we need to get `exter.cond` into an integer representation. First, let's generate a table that shows the distribution across values of `exter.cond`, using `dplyr::count()`. Call this `ex_cond_count`. We'll use this to check the conversion process over the next few steps.*
-# ex_cond_count = ???
+ex_cond_count = dataf_nodup %>% 
+  count(exter.cond)
 
 #' 3. *As a first attempt, write a function `char_to_int()` that takes a character vector as input, coerces to a factor using `as.factor()`, and then coerces it to `as.integer()`.  Using `mutate()` and `count()`, apply this function to `exter.cond` and check the distribution against your answer for #2.* 
 
