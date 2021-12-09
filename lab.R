@@ -182,26 +182,27 @@ dataf_nodup %>%
 
 #' 7. *Finally we want this factor to be in our analysis dataframe.  **Normally, to preserve immutability**, I would either do this in the pipe where we first loaded the CSV (as we did above, when we fixed the names), or start by creating something like `dataf_raw` and then write a pipe that did all the cleaning steps and assigning the result to `dataf`, including this.  For the purposes of this lab, we'll just do it here.  Using either `mutate_at()` or `mutate(across())`, apply `char_to_int()` to all of the condition variables represented using these same levels:  `exter.cond`, `bsmt.cond`, `heating.qc`, `garage.cond`.* 
 
-# dataf = ???
-
-
-
+dataf = dataf_nodup %>% 
+  mutate_at(exter.cond, bsmt.cond, heating.qc, garage.cond -group_cols()) char_to_int(c('Po', 'Fa', 'TA', 'Gd','Ex')) 
+  
 #' # Problem 7 #
 # problem 7 ----
 #' *Recall that we're interested in finding variables that are highly correlated with sale price.  We can use the function `cor()` to construct a correlation matrix, with correlations between all pairs of variables in the dataframe.  But this creates two challenges.  First, `cor()` only works with numerical inputs.  If we try it with our current dataframe, it throws an error*:  
-
-# cor(dataf)
+#' 
+cor(dataf)
 
 #' *Second, the result will be a matrix — a 2D collection of numbers — rather than a dataframe.  We'll need to convert it back to a dataframe to use our familiar tidyverse tools, eg, using `arrange()` to put the correlations in descending order.* 
 #' 
 #' 1. *For the first problem (column types), we could use the tidyverse function `select()` to pull out a given set of columns from the dataframe.*
-
-# select(dataf, saleprice, overall.cond, gr.liv.area)
+#' 
+select(dataf, saleprice, overall.cond, gr.liv.area)
 
 #' *But manually typing out all of the numerical covariates would be tedious and prone to error.  Fortunately `select()` is much more powerful than this.  You can read more in `?select` or here: <https://tidyselect.r-lib.org/reference/language.html>.  Then specifically read the docs for `where()`.*
 #' 
 #' *Write a pipe that `select()`s the numeric columns and passes the result to `cor()` for a Spearman regression and uses the `pairwise.complete.obs` method to handle missing values.  Assign the result to `cor_matrix`.*  
-# cor_matrix = ???
+cor_matrix = dataf %>% 
+  select(where(is.numeric)) %>% 
+  cor(use = 'pairwise.complete.obs', method = 'spearman')
 
 
 #' 2. *Now we convert the correlation matrix into a dataframe. Uncomment the following line, and explain what it's doing.* 
