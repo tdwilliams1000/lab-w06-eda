@@ -28,6 +28,7 @@
 ## Setup
 library(tidyverse)
 library(dplyr)
+library(AmesHousing)
 ## **IMPORTANT**: Add all dependencies to `DESCRIPTION`
 #' # Problem 1 #
 # problem 1 ----
@@ -146,16 +147,25 @@ ex_cond_count = dataf_nodup %>%
   count(exter.cond)
 
 #' 3. *As a first attempt, write a function `char_to_int()` that takes a character vector as input, coerces to a factor using `as.factor()`, and then coerces it to `as.integer()`.  Using `mutate()` and `count()`, apply this function to `exter.cond` and check the distribution against your answer for #2.* 
-
+#' 
+char_to_int = function(data) {
+  data %>% 
+    as.factor() %>% 
+    as.integer()
+}
+mutate(char_to_int(dataf_nodup$exter.cond))
 #' 4. *Can you explain what went wrong?  Hint:  Check the docs for the `levels` argument of `factor()`.*
-#' 
-#' 
+#' Each step is completed but it is not saved. The steps are completed individually 
+#' as.factor converts the variables alphabetically before changing the variables into integers 
 #' 
 
 #' 5. *We can fix this by passing in a character vector of the levels in the desired order, namely, from Po (Poor) to Ex (Excellent).  Modify `char_to_int()` to use such a vector in the `as.factor()` call.  Why doesn't this work?*
 #' 
-#' 
-#' 
+char_to_int = function(data, levels) {
+  data %>% 
+    as.factor(levels) %>% 
+    as.integer()
+}
 
 #' 6. *The most efficient way to avoid this poor design is to use `forcats::fct_relevel()`.  This is loaded as part of the tidyverse, so you don't need to modify the packages loaded up above, or `DESCRIPTION`.  Rewrite `char_to_int()` again, using `fct_relevel()` in place of `as.factor()`, and check against your answer to #2 to ensure that this is all working as expected.*
 #' 
