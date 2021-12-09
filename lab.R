@@ -166,9 +166,19 @@ char_to_int = function(data, levels) {
     as.factor(levels) %>% 
     as.integer()
 }
+mutate(char_to_int(dataf_nodup$exter.cond, c('Po', 'Fa', 'TA', 'Gd','Ex') ))
+#' as.factor does not take levels  
 
 #' 6. *The most efficient way to avoid this poor design is to use `forcats::fct_relevel()`.  This is loaded as part of the tidyverse, so you don't need to modify the packages loaded up above, or `DESCRIPTION`.  Rewrite `char_to_int()` again, using `fct_relevel()` in place of `as.factor()`, and check against your answer to #2 to ensure that this is all working as expected.*
 #' 
+char_to_int = function(data, levels) {
+  data %>% 
+    fct_relevel(levels) %>% 
+    as.integer()
+}
+dataf_nodup %>% 
+  mutate(exter.cond = char_to_int(exter.cond,c('Po', 'Fa', 'TA', 'Gd','Ex'))) %>% 
+  count(exter.cond)
 
 #' 7. *Finally we want this factor to be in our analysis dataframe.  **Normally, to preserve immutability**, I would either do this in the pipe where we first loaded the CSV (as we did above, when we fixed the names), or start by creating something like `dataf_raw` and then write a pipe that did all the cleaning steps and assigning the result to `dataf`, including this.  For the purposes of this lab, we'll just do it here.  Using either `mutate_at()` or `mutate(across())`, apply `char_to_int()` to all of the condition variables represented using these same levels:  `exter.cond`, `bsmt.cond`, `heating.qc`, `garage.cond`.* 
 
