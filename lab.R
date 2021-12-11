@@ -53,7 +53,7 @@ library(AmesHousing)
 #' *`AmesHousing` includes a few different representations of the data.  We'll be working with `ames_raw`, which represents what you'd get from reading in the original CSV file.  However — like a lot of CSV files — the column names aren't R-friendly.*
 #' 1. *Try running the following line.  Can you explain why this causes an error?*
 #' 
-ames_raw$MS SubClass
+# ames_raw$MS SubClass
 #'There is a space, so R cannot properly identify which variables I am referring to.   
 
 #' 2. *We can use `set_names()` to modify a variable's names (here, the column names) in a pipe-friendly way.  In particular, `set_names()` supports passing a function to modify the names.  Write a pipe that starts with `ames_raw`, uses `make.names()` to deal with spaces and column names that start with numbers, and then uses `tolower()` to make all the names lowercase.  Assign the result to `dataf`, which will be our primary working dataframe.*
@@ -158,7 +158,7 @@ char_to_int = function(data) {
     as.factor() %>% 
     as.integer()
 }
-mutate(char_to_int(dataf_nodup$exter.cond))
+#mutate(char_to_int(dataf_nodup$exter.cond))
 #' 4. *Can you explain what went wrong?  Hint:  Check the docs for the `levels` argument of `factor()`.*
 #' Each step is completed but it is not saved. The steps are completed individually 
 #' as.factor converts the variables alphabetically before changing the variables into integers. 
@@ -171,7 +171,7 @@ char_to_int = function(data, levels) {
     as.factor(levels) %>% 
     as.integer()
 }
-mutate(char_to_int(dataf_nodup$exter.cond, c('Po', 'Fa', 'TA', 'Gd','Ex') ))
+#mutate(char_to_int(dataf_nodup$exter.cond, c('Po', 'Fa', 'TA', 'Gd','Ex') ))
 #' as.factor does not take levels  
 
 #' 6. *The most efficient way to avoid this poor design is to use `forcats::fct_relevel()`.  This is loaded as part of the tidyverse, so you don't need to modify the packages loaded up above, or `DESCRIPTION`.  Rewrite `char_to_int()` again, using `fct_relevel()` in place of `as.factor()`, and check against your answer to #2 to ensure that this is all working as expected.*
@@ -197,7 +197,7 @@ dataf_nodup = dataf_nodup %>%
 # problem 7 ----
 #' *Recall that we're interested in finding variables that are highly correlated with sale price.  We can use the function `cor()` to construct a correlation matrix, with correlations between all pairs of variables in the dataframe.  But this creates two challenges.  First, `cor()` only works with numerical inputs.  If we try it with our current dataframe, it throws an error*:  
 #' 
-cor(dataf)
+#cor(dataf)
 
 #' *Second, the result will be a matrix — a 2D collection of numbers — rather than a dataframe.  We'll need to convert it back to a dataframe to use our familiar tidyverse tools, eg, using `arrange()` to put the correlations in descending order.* 
 #' 
